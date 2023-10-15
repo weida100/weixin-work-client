@@ -1,0 +1,18 @@
+{
+    "name": "weida/weixin-work-client",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Weida\\WeixinWorkClient\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Weida",
+            "email": "sgenmi@gmail.com"
+        }
+    ],
+    "require": {
+        "guzzlehttp/guzzle": "^7.7"
+    }
+}
