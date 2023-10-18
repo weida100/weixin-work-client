@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace Weida\WeixinWorkClient\Client;
 
-class System
+class System extends Base
 {
 
 }
