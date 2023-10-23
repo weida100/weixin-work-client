@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace Weida\WeixinWorkClient;
 
-use Weida\WeixinWorkClient\Contact\ConfigInterface;
+use Weida\WeixinWorkClient\Contract\ConfigInterface;
 
 class Config implements ConfigInterface
 {

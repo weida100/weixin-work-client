@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace Weida\WeixinWorkClient\Client;
 
-use Weida\WeixinWorkClient\Contact\HttpClientInterface;
+use Weida\WeixinWorkClient\Contract\HttpClientInterface;
 
 abstract class Base
 {

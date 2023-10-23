@@ -11,7 +11,8 @@ namespace Weida\WeixinWorkClient;
 use Weida\WeixinWorkClient\Client\Group;
 use Weida\WeixinWorkClient\Client\Login;
 use Weida\WeixinWorkClient\Client\User;
-use Weida\WeixinWorkClient\Contact\HttpClientInterface;
+use Weida\WeixinWorkClient\Contract\EncryptorInterface;
+use Weida\WeixinWorkClient\Contract\HttpClientInterface;
 
 final class Client
 {
@@ -20,7 +21,7 @@ final class Client
     private Login $login;
     private User $user;
     private HttpClientInterface $httpClient;
-
+    private EncryptorInterface $encryptor;
     protected function __construct(array $config)
     {
         $this->config = new Config($config);
@@ -44,10 +45,23 @@ final class Client
      */
     public function getHttpClient():HttpClientInterface {
         if(empty($this->httpClient)){
-            $this->httpClient = new HttpClient($this->config());
+            $this->httpClient = new HttpClient($this->config(),$this->getEncryptor());
         }
         return $this->httpClient;
     }
+
+    /**
+     * @return EncryptorInterface
+     * @author Weida
+     */
+    public function getEncryptor():EncryptorInterface{
+        if(empty($this->encryptor)){
+            $this->encryptor = new Encryptor();
+        }
+        return $this->encryptor;
+    }
+
+
     /**
      * @return Login
      * @author Weida

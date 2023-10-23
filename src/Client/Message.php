@@ -11,4 +11,5 @@ namespace Weida\WeixinWorkClient\Client;
 class Message extends Base
 {
 
+
 }

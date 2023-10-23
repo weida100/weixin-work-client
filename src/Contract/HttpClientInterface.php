@@ -6,13 +6,15 @@ declare(strict_types=1);
  * Email: Sgenmi@gmail.com
  */
 
-namespace Weida\WeixinWorkClient\Contact;
+namespace Weida\WeixinWorkClient\Contract;
 
-use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Promise\PromiseInterface;
 use Psr\Http\Message\ResponseInterface;
 
-interface HttpClientInterface extends ClientInterface
+interface HttpClientInterface
 {
+    public function request(string $method, $uri, array $options = []): ResponseInterface;
+    public function requestAsync(string $method, $uri, array $options = []): PromiseInterface;
     public function postJson($uri,array $data):ResponseInterface;
 
 }

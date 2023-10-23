@@ -6,7 +6,7 @@ declare(strict_types=1);
  * Email: Sgenmi@gmail.com
  */
 
-namespace Weida\WeixinWorkClient\Contact;
+namespace Weida\WeixinWorkClient\Contract;
 
 interface ConfigInterface
 {

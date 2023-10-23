@@ -10,54 +10,24 @@ namespace Weida\WeixinWorkClient;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Promise\PromiseInterface;
-use GuzzleHttp\Psr7\Uri;
 use InvalidArgumentException;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
-use Weida\WeixinWorkClient\Contact\HttpClientInterface;
+use Weida\WeixinWorkClient\Contract\ConfigInterface;
+use Weida\WeixinWorkClient\Contract\EncryptorInterface;
+use Weida\WeixinWorkClient\Contract\HttpClientInterface;
 
 class HttpClient implements HttpClientInterface
 {
     private Client $client;
     private array $httpConfig=[];
-    private Config $config;
-    public function __construct(Config $config)
+    private ConfigInterface $config;
+    private EncryptorInterface $encryptor;
+    public function __construct(ConfigInterface $config,EncryptorInterface $encryptor)
     {
         $this->client= new Client();
         $this->config = $config;
-
-    }
-
-    /**
-     * @param RequestInterface $request
-     * @param array $options
-     * @return ResponseInterface
-     * @throws GuzzleException
-     * @author Weida
-     */
-    public function send(RequestInterface $request, array $options = []): ResponseInterface
-    {
-        $this->httpConfig = $options;
-        if(empty($request->getUri())){
-            $request = $request->withUri((new Uri($this->getUri())));
-        }
-        return $this->client->send($request,$options);
-    }
-
-    /**
-     * @param RequestInterface $request
-     * @param array $options
-     * @return PromiseInterface
-     * @author Weida
-     */
-    public function sendAsync(RequestInterface $request, array $options = []): PromiseInterface
-    {
-        $this->httpConfig = $options;
-        if(empty($request->getUri())){
-            $request = $request->withUri((new Uri($this->getUri())));
-        }
-        return $this->client->sendAsync($request,$options);
+        $this->encryptor = $encryptor;
     }
 
     /**
@@ -139,6 +109,6 @@ class HttpClient implements HttpClientInterface
      */
     public function postJson($uri, array $data): ResponseInterface
     {
-        return $this->request('POST',$uri,['json'=>$data]);
+        return $this->request('POST',$uri,['body'=>$this->encryptor->encrypt($data)]);
     }
 }
