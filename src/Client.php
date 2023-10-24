@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace Weida\WeixinWorkClient;
 
-use Weida\WeixinWorkClient\Client\Group;
+use Weida\WeixinWorkClient\Client\Room;
 use Weida\WeixinWorkClient\Client\Login;
 use Weida\WeixinWorkClient\Client\User;
 use Weida\WeixinWorkClient\Contract\EncryptorInterface;
@@ -17,7 +17,7 @@ use Weida\WeixinWorkClient\Contract\HttpClientInterface;
 final class Client
 {
     private Config $config;
-    private Group $group;
+    private Room $room;
     private Login $login;
     private User $user;
     private HttpClientInterface $httpClient;
@@ -85,14 +85,14 @@ final class Client
     }
 
     /**
-     * @return Group
+     * @return Room
      * @author Weida
      */
-    public function group():Group{
-        if(empty($this->group)){
-            $this->group = new Group($this->getHttpClient());
+    public function group():Room{
+        if(empty($this->room)){
+            $this->room = new Room($this->getHttpClient());
         }
-        return $this->group;
+        return $this->room;
     }
 
     /**

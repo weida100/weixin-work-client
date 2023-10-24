@@ -107,7 +107,7 @@ class HttpClient implements HttpClientInterface
      * @throws GuzzleException
      * @author Weida
      */
-    public function postJson($uri, array $data): ResponseInterface
+    public function sendBody(array $data, $uri=''): ResponseInterface
     {
         return $this->request('POST',$uri,['body'=>$this->encryptor->encrypt($data)]);
     }

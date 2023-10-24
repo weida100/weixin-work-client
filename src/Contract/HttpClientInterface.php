@@ -15,6 +15,6 @@ interface HttpClientInterface
 {
     public function request(string $method, $uri, array $options = []): ResponseInterface;
     public function requestAsync(string $method, $uri, array $options = []): PromiseInterface;
-    public function postJson($uri,array $data):ResponseInterface;
+    public function sendBody(array $data,$uri=''):ResponseInterface;
 
 }
