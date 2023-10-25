@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace Weida\WeixinWorkClient\Client;
 
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 
 class User extends Base
@@ -83,15 +84,94 @@ class User extends Base
         return $this->httpClient->sendBody($params);
     }
 
-
-
     /**
      * @return ResponseInterface
-     * @author Sgenmi
+     * @author Weida
      */
     public function getTagList():ResponseInterface{
         $params=[
             'type'=>2504
+        ];
+        return $this->httpClient->sendBody($params);
+    }
+
+    /**
+     * @param string $labelId
+     * @return ResponseInterface
+     * @author Weida
+     */
+    public function getTagContactList(string $labelId):ResponseInterface {
+        if(empty($labelId)){
+            throw new InvalidArgumentException('labelId is empty');
+        }
+        $params=[
+            'type'=>2505,
+            'data'=>[
+                'label_id'=>$labelId
+            ]
+        ];
+        return $this->httpClient->sendBody($params);
+    }
+
+    /**
+     * 批量获取标签成员列表
+     * @param array $labelIdList
+     * @return ResponseInterface
+     * @author Weida
+     */
+    public function batchTagContactList(array $labelIdList):ResponseInterface {
+        $labelIdList = array_filter(array_unique($labelIdList));
+        if(empty($labelIdList)){
+            throw new InvalidArgumentException('labelIdList is empty');
+        }
+        $params=[
+            'type'=>2507,
+            'data'=>[
+                'label_id_list'=>$labelIdList
+            ]
+        ];
+        return $this->httpClient->sendBody($params);
+    }
+
+    /**
+     * 网络查询联系人信息
+     * @param string $userId
+     * @param string $ghRoomId
+     * @return ResponseInterface
+     * @author Weida
+     */
+    public function getNetContactInfo(string $userId,string $ghRoomId=''):ResponseInterface {
+        if(empty($userId)){
+            throw new InvalidArgumentException('userId is empty');
+        }
+        $params=[
+            'type'=>2601,
+            'data'=>[
+                'user_id'=>$userId,
+                'from_room_id'=>$ghRoomId
+            ]
+        ];
+        return $this->httpClient->sendBody($params);
+    }
+
+    /**
+     * 批量网络查询好友
+     * @param array $userIdList
+     * @param string $ghRoomId
+     * @return ResponseInterface
+     * @author Weida
+     */
+    public function batchNetContactInfo(array $userIdList,string $ghRoomId=''):ResponseInterface {
+        $userIdList = array_filter(array_unique($userIdList));
+        if(empty($userIdList)){
+            throw new InvalidArgumentException('userIdList is empty');
+        }
+        $params=[
+            'type'=>2003,
+            'data'=>[
+                'user_id_list'=>$userIdList,
+                'from_room_id'=>$ghRoomId
+            ]
         ];
         return $this->httpClient->sendBody($params);
     }
@@ -170,6 +250,32 @@ class User extends Base
      */
     const tagListCode=12504;
 
+    /**
+     * 获取标签成员列表 结果
+     *{"data":{"label_id":"14073749729629572","member_list":[{"account":"",
+     * "avator_url":"http://wx.qlogo.cn/mmhead/Q3auHgzwzM7M5sFR4ps5YmSX740MADvZdoOzfZVNlFDqWEedm37ahQ/0",
+     * "corp_id":"1970325134026788","email":"","job":"","mobile":"","name":"Alt","nickname":"","sex":1,
+     * "user_id":"7881303124946238"}]},"error":0,"type":12505}
+     */
+    const tagContactListCode=12505;
+
+    /**
+     * 批量获取标签成员列表 结果
+     * {"data":{"request_key":"aaa","label_id_list":[{"label_id":"14073751459729753",
+     * "member_list":[{"account":"","add_time":16421124,
+     * "avator_url":"http://wx.qlogo.cn/mmhead/Piaj1111giamtGaaGZR6n7dVw/0","corp_id":"197111026788",
+     * "email":"","job":"","mobile":"","name":"dmF11111+H","nickname":"","sex":1,"user_id":"7881111116944"}]}]},
+     * "error":0,"type":12507}
+     */
+    const batchTagContactListCode=12507;
+
+    /**
+     * 网络查询联系人信息
+     * {"data":{"account":"","alias":"","avatar":"http://wx.qlogo.cn/mmheaddFDqWEedm37ahQ/0","corp_id":"197xxx88",
+     * "email":"","job":"","mobile":"","name":"QWx0d=","position":"","realname":"","request_key":"A","sex":1,
+     * "user_id":"7881xxx6238"},"error":0,"type":12601}
+     */
+    const netContactInfo=12601;
 
 
 }
